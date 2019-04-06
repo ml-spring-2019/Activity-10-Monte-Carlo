@@ -1,4 +1,5 @@
 import random
+import pdb
 graph = {}
 
 def main():
@@ -37,7 +38,9 @@ def generate_episode(start_state):
     act_tup = transition(int(start_state[-1]), random.randint(1,2))
 
     for state in act_tup:
-        steps = start_state + " " + generate_episode(state)
+#        pdb.set_trace()
+        steps = generate_episode(state)
+    return start_state + " " + steps
 
 if __name__ == "__main__":
     main()
