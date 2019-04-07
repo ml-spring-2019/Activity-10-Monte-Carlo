@@ -7,8 +7,10 @@ def main():
     state_num, action_num = 1, 2
     create_graph()
     ending_states = transition(state_num, action_num)
-    result = generate_episode("state_1")
-    print_result(result)
+    episode_details = generate_episode("state_1")
+    print(episode_details)
+    state_action_pair_vals = store_state_action_pair_vals(episode_details)
+    print(state_action_pair_vals)
 
 def print_result(result):
     for i in range(0, len(result)):
@@ -41,7 +43,7 @@ def generate_episode(start_state):
     steps = ""
     result = []
     if start_state == "state_5":
-        return [{"state": start_state, 
+        return [{"state": start_state,
                  "reward": 20}]
 
     # randomize an action and get tuple
@@ -55,8 +57,8 @@ def generate_episode(start_state):
     for act in act_tup:
         dest_state = act
         if action == 1:
-            my_result = [{"state": start_state, 
-                          "action": action, 
+            my_result = [{"state": start_state,
+                          "action": action,
                           "reward": -1}]
         elif action == 2:
             my_result = [{"state": start_state,
@@ -80,5 +82,16 @@ def generate_episode(start_state):
         index_of_highest_reward = rewards.index(max(rewards))
         return branch_result[index_of_highest_reward]
 
+def store_state_action_pair_vals(episode_details):
+    state_vals = {}
+    count = episode_details[-1]['reward']
+    state_vals[episode_details[-1]['state']] = count
+
+    for i in range(len(episode_details)-2, -1, -1):
+        count += episode_details[i]['reward']
+        state_vals[episode_details[i]['state']] = count
+    return state_vals
+
+    return
 if __name__ == "__main__":
     main()
